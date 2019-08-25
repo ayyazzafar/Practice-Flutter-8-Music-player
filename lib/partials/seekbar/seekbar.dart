@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:fluttery/gestures.dart';
 import 'package:music_player/partials/seekbar/circle-clipper.dart';
 import 'package:music_player/songs.dart';
 import 'package:music_player/theme.dart';
@@ -9,25 +10,43 @@ class SeekBar extends StatelessWidget {
   const SeekBar({
     Key key,
   }) : super(key: key);
+  void _onRadialDragEnd(){
 
+  }
+  void _onRadialDargStart(PolarCoord coord){
+
+  }
+  void _onRadialDragUpdate(PolarCoord coord){
+
+  }
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Center(
-        child: Container(
-          width: 140.0,
-          height: 140.0,
-          child: RadialSeekBar(
-            progressPercentage: 0.25,
-            thumbPosition: 0.25,
-            progressColor: accentColor,
-            trackColor: const Color(0xFFDDDDDD),
-            innerPadding: EdgeInsets.all(10.0),
-            thumbColor: lightAccentColor ,
-            child: ClipOval(
-              clipper: CircleClipper(),
-              child: Image.network(demoPlaylist.songs[0].albumArtUrl,
-                  fit: BoxFit.cover),
+      child: RadialDragGestureDetector(
+        onRadialDragEnd: _onRadialDragEnd,
+        onRadialDragStart: _onRadialDargStart,
+        onRadialDragUpdate: _onRadialDragUpdate,
+              child: Container(
+          width: double.infinity, 
+          height: double.infinity,
+          color: Colors.transparent,
+          child: Center(
+            child: Container(
+              width: 140.0,
+              height: 140.0,
+              child: RadialProgressBar(
+                progressPercentage: 0.25,
+                thumbPosition: 0.25,
+                progressColor: accentColor,
+                trackColor: const Color(0xFFDDDDDD),
+                innerPadding: EdgeInsets.all(10.0),
+                thumbColor: lightAccentColor ,
+                child: ClipOval(
+                  clipper: CircleClipper(),
+                  child: Image.network(demoPlaylist.songs[0].albumArtUrl,
+                      fit: BoxFit.cover),
+                ),
+              ),
             ),
           ),
         ),
@@ -36,7 +55,7 @@ class SeekBar extends StatelessWidget {
   }
 }
 
-class RadialSeekBar extends StatefulWidget {
+class RadialProgressBar extends StatefulWidget {
 
   final double trackWidth;
   final Color trackColor;
@@ -51,7 +70,7 @@ class RadialSeekBar extends StatefulWidget {
   final EdgeInsets outerPadding;
 
 
-  RadialSeekBar({
+  RadialProgressBar({
     this.trackWidth = 3.0,
     this.trackColor = Colors.grey,
     this.progressWidth = 5.0,
@@ -66,10 +85,10 @@ class RadialSeekBar extends StatefulWidget {
   });
 
   @override
-  _RadialSeekBarState createState() => _RadialSeekBarState();
+  _RadialProgressBarState createState() => _RadialProgressBarState();
 }
 
-class _RadialSeekBarState extends State<RadialSeekBar> {
+class _RadialProgressBarState extends State<RadialProgressBar> {
 
   EdgeInsets _insetsForPainter(){
     // make room for painted track progress and thumb . we divide by 2.0 
